@@ -488,7 +488,6 @@ static int mdss_dsi_off(struct mdss_panel_data *pdata, int power_state)
 	gpio_set_value((ctrl_pdata->rst_gpio), 0);
 	usleep(100 * 1000);
 #endif
-
 	pr_debug("%s+: ctrl=%pK ndx=%d power_state=%d\n",
 		__func__, ctrl_pdata, ctrl_pdata->ndx, power_state);
 
