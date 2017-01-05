@@ -22,6 +22,7 @@
 #include <linux/msm_adreno_devfreq.h>
 #include <asm/cacheflush.h>
 #include <soc/qcom/scm.h>
+#include <linux/display_state.h>
 #include "governor.h"
 
 static DEFINE_SPINLOCK(tz_lock);
@@ -60,6 +61,12 @@ static void do_partner_start_event(struct work_struct *work);
 static void do_partner_stop_event(struct work_struct *work);
 static void do_partner_suspend_event(struct work_struct *work);
 static void do_partner_resume_event(struct work_struct *work);
+
+/* Adreno Be notified about State */
+static bool display_status;
+static bool suspended = false;
+
+static struct workqueue_struct *workqueue;
 
 /* Trap into the TrustZone, and call funcs there. */
 static int __secure_tz_reset_entry2(unsigned int *scm_data, u32 size_scm_data,
@@ -196,6 +203,15 @@ static int tz_get_target_freq(struct devfreq *devfreq, unsigned long *freq,
 	}
 
 	*freq = stats.current_frequency;
+
+	/*
+	 * Force to use & record as min freq when system has
+	 * entered screen-off state.
+	 */
+	if (suspended || !display_status) {
+		*freq = devfreq->profile->freq_table[devfreq->profile->max_state - 1];
+		return 0;
+	}
 
 #ifdef CONFIG_ADRENO_IDLER
 	if (adreno_idler(stats, devfreq, freq)) {
@@ -372,7 +388,8 @@ static int tz_suspend(struct devfreq *devfreq)
 	struct devfreq_msm_adreno_tz_data *priv = devfreq->data;
 	unsigned int scm_data[2] = {0, 0};
 	__secure_tz_reset_entry2(scm_data, sizeof(scm_data), priv->is_64);
-
+	display_status = display_state();
+	suspended = true;
 	priv->bin.total_time = 0;
 	priv->bin.busy_time = 0;
 	return 0;
@@ -402,6 +419,8 @@ static int tz_handler(struct devfreq *devfreq, unsigned int event, void *data)
 
 	case DEVFREQ_GOV_RESUME:
 		result = tz_resume(devfreq);
+		display_status = display_state();
+		suspended = false;
 		break;
 
 	case DEVFREQ_GOV_INTERVAL:
