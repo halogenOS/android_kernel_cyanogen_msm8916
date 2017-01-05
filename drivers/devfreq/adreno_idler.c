@@ -60,7 +60,7 @@ static bool adreno_idler_active = true;
 module_param_named(adreno_idler_active, adreno_idler_active, bool, 0664);
 
 static unsigned int idlecount = 0;
-
+static bool display_status;
 int adreno_idler(struct devfreq_dev_status stats, struct devfreq *devfreq,
 		 unsigned long *freq)
 {
