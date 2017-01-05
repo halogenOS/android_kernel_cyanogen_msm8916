@@ -66,7 +66,7 @@ int adreno_idler(struct devfreq_dev_status stats, struct devfreq *devfreq,
 {
 	/* Make use of display_state to get current display status*/
 
-	bool display_status = display_state();
+	display_status = display_state();
 
 	if (!adreno_idler_active)
 		return 0;
