@@ -432,22 +432,24 @@ static void cpufreq_stats_update_policy_cpu(struct cpufreq_policy *policy)
 	unsigned long flags;
 
 	spin_lock_irqsave(&cpufreq_stats_table_lock, flags);
-	old = per_cpu(cpufreq_stats_table, policy->cpu);
+	
+	stat = per_cpu(cpufreq_stats_table, policy->last_cpu);
 
-	if (!old) {
+	if (!stat) {
 		spin_unlock_irqrestore(&cpufreq_stats_table_lock, flags);
 		return;
 	}
 
-	stat = per_cpu(cpufreq_stats_table, policy->last_cpu);
+	pr_debug("Updating stats_table for new_cpu %u from last_cpu %u\n",
+			policy->cpu, policy->last_cpu);
+
+	old = per_cpu(cpufreq_stats_table, policy->cpu);
 
 	if (old) {
 		kfree(old->time_in_state);
 		kfree(old);
 	}
 
-	pr_debug("Updating stats_table for new_cpu %u from last_cpu %u\n",
-			policy->cpu, policy->last_cpu);
 	per_cpu(cpufreq_stats_table, policy->cpu) = per_cpu(cpufreq_stats_table,
 			policy->last_cpu);
 	per_cpu(cpufreq_stats_table, policy->last_cpu) = NULL;
