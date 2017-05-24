@@ -85,11 +85,8 @@ function afh_upload() {
 }
 
 function push_and_flash() {
-  status=$(adb get-state)
-  [[ "$status" != "recovery" && "$status" != "" ]] && adb reboot recovery && sleep 12 2>/dev/null
   adb push "${ZIP_MOVE}"/${FINAL_VER}.zip /external_sd/Caesium/
   adb shell twrp install "/external_sd/Caesium/${FINAL_VER}.zip"
-  adb shell reboot
 }
 
 while getopts ":ctabfm:" opt; do
