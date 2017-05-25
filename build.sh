@@ -30,7 +30,6 @@ FINAL_VER="$KERNEL_NAME""$DEVICE""$VER"
 export ARCH=arm
 export SUBARCH=arm
 export KBUILD_BUILD_USER=MSF
-export KBUILD_BUILD_HOST=jarvisbox
 
 # Paths
 KERNEL_DIR=$(pwd)
@@ -44,6 +43,7 @@ ZIMAGE_DIR="$KERNEL_DIR/arch/arm/boot"
 
 # Functions
 function make_kernel() {
+  [ "$(hostname)" ] && ccache -z
   [ "${CLEAN}" ] && make clean
   make "${DEFCONFIG}" "${THREAD}"
   if [ "${MODULE}" ]; then
