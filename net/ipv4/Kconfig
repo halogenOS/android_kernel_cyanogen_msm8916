@@ -514,7 +514,7 @@ config TCP_CONG_HSTCP
 	A modification to TCP's congestion control mechanism for use
 	with large congestion windows. A table indicates how much to
 	increase the congestion window by when an ACK is received.
- 	For more detail	see http://www.icir.org/floyd/hstcp.html
+	For more detail	see http://www.icir.org/floyd/hstcp.html
 
 config TCP_CONG_HYBLA
 	tristate "TCP-Hybla congestion control algorithm"
