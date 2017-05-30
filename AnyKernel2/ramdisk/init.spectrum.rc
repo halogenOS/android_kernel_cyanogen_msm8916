@@ -34,9 +34,9 @@ on property:persist.spectrum.profile=0
     write /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq 200000
     chmod 444 /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq
     write /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk 1
-    write /sys/module/lowmemorykiller/parameters/minfree 2048,4096,8192,16384,24576,32768
+    write /sys/module/lowmemorykiller/parameters/minfree "2048,4096,8192,16384,24576,32768"
     write /sys/module/cpu_boost/parameters/input_boost_ms 0
-    write /sys/module/cpu_boost/parameters/input_boost_freq 0:0 1:0 2:0 3:0
+    write /sys/module/cpu_boost/parameters/input_boost_freq "0:0 1:0 2:0 3:0"
 
 # Performance
 on property:persist.spectrum.profile=1
@@ -125,13 +125,13 @@ on property:persist.spectrum.profile=2
     write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 20000
     write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1094400
     write /sys/devices/system/cpu/cpufreq/interactive/timer_slack 40000
-    write /sys/devices/system/cpu/cpufreq/interactive/target_loads 1 800000:85 998400:90 1094400:95
+    write /sys/devices/system/cpu/cpufreq/interactive/target_loads "1 800000:85 998400:90 1094400:95"
     write /sys/devices/system/cpu/cpufreq/interactive/max_freq_hysteresis 15000
     write /sys/devices/system/cpu/cpufreq/interactive/use_sched_load 0
     write /sys/module/msm_thermal/core_control/enabled 0
     write /sys/module/msm_thermal/parameters/enabled Y
     write /sys/module/cpu_boost/parameters/input_boost_ms 0
-    write /sys/module/cpu_boost/parameters/input_boost_freq 0:0 1:0 2:0 3:0
+    write /sys/module/cpu_boost/parameters/input_boost_freq "0:0 1:0 2:0 3:0"
 
 # Gaming
 on property:persist.spectrum.profile=3
