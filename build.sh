@@ -15,7 +15,7 @@ restore='\033[0m'
 clear
 
 # Resources
-THREAD="-j$(nproc --all)"
+THREAD="-j$(($(nproc --all) * 2))"
 DEFCONFIG="caesium_defconfig"
 KERNEL="zImage"
 
